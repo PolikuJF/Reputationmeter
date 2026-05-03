@@ -6,8 +6,6 @@ from parser.main import get_organization_reviews, MODE_DICT
 from parser.selenium_helper import make_driver
 
 
-
-
 def run():
     parser = argparse.ArgumentParser()
 
@@ -25,6 +23,11 @@ def run():
                         required=False,
                         default=modes_list[0],
                         )
+    parser.add_argument('--format',  
+                        choices=['csv', 'json'],
+                        default='csv',
+                        help='Output format (csv or json)')
+
     args = parser.parse_args()
     args.debug = args.debug or False
     configure_logging(
@@ -39,6 +42,7 @@ def run():
             driver=driver,
             implicitly_wait=1,
             mode=args.mode,
+            output_format=args.format,  
         )
 
 
