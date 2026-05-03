@@ -1,10 +1,10 @@
+import csv
+import logging
 from selenium.common.exceptions import (
     NoSuchElementException,
 )
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -127,6 +127,57 @@ class Review:
             )
         except NoSuchElementException:
             pass
+
+    @staticmethod
+    def save_to_csv(reviews_list, filepath):
+        """
+        Сохраняет список объектов Review в CSV файл.
+        Словари и списки преобразуются в строки для совместимости с CSV.
+        """
+        if not reviews_list:
+            logger.warning("No reviews to save")
+            return
+
+        
+        fieldnames = set()
+        for review in reviews_list:
+            if isinstance(review, Review):
+                fieldnames.update(review.__dict__.keys())
+            else:
+                fieldnames.update(review.keys())
+        fieldnames = sorted(list(fieldnames))
+
+        
+        with open(filepath, 'w', encoding='utf-8-sig', newline='') as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+            writer.writeheader()
+
+            for review in reviews_list:
+                
+                if isinstance(review, Review):
+                    review_dict = review.__dict__
+                else:
+                    review_dict = review
+
+                
+                row = {}
+                for key, value in review_dict.items():
+                    if isinstance(value, dict):
+                        row[key] = '; '.join(
+                            [f"{k}: {v}" for k, v in value.items() if v]
+                        ) if value else ''
+                    elif isinstance(value, list):
+                        row[key] = ', '.join(
+                            [str(item) for item in value if item]
+                        ) if value else ''
+                    elif value is None:
+                        row[key] = ''
+                    else:
+                        row[key] = value
+
+                writer.writerow(row)
+
+        logger.info(f'Saved {len(reviews_list)} reviews to {filepath}')
 
 
 if __name__ == '__main__':
