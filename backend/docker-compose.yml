@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17.4
+    container_name: reputation_postgres
+    environment:
+      POSTGRES_USER: reputation_user
+      POSTGRES_PASSWORD: reputation_pass
+      POSTGRES_DB: reputation_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: reputation_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  backend:
+    build: .
+    container_name: reputation_backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://reputation_user:reputation_pass@postgres:5432/reputation_db
+      REDIS_URL: redis://redis:6379
+      SECRET_KEY: your-secret-key-for-dev
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: ""
+      SMTP_PASSWORD: ""
+      FROM_EMAIL: ""
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

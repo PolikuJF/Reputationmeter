@@ -1,0 +1,12 @@
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+sqlalchemy==2.0.38
+asyncpg==0.30.0
+pydantic==2.10.6
+psycopg2-binary==2.9.10
+alembic==1.14.1
+python-dotenv==1.0.1
+selenium==4.34.2
+tqdm==4.67.1
+
+

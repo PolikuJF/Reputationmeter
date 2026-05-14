@@ -1,9 +1,9 @@
 import argparse
 import logging
 
-from parser.log import configure_logging
-from parser.main import get_organization_reviews, MODE_DICT
-from parser.selenium_helper import make_driver
+from backend.app.ParserReviews.parser.log import configure_logging
+from backend.app.ParserReviews.parser.main import get_organization_reviews, MODE_DICT
+from backend.app.ParserReviews.parser.selenium_helper import make_driver
 
 
 def run():
