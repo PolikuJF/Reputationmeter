@@ -1,4 +1,3 @@
-// reviewsApi.ts
 import { apiClient } from './client';
 import { Review, ReviewsFilters, ReviewsResponse } from '../types';
 
@@ -19,13 +18,3 @@ export const reviewsApi = {
   },
 };
 
-// establishmentsApi.ts
-import { apiClient } from './client';
-import { Establishment } from '../types';
-
-export const establishmentsApi = {
-  getList: async (activeOnly: boolean = true): Promise<Establishment[]> => {
-    const response = await apiClient.get('/establishments', { params: { active_only: activeOnly } });
-    return response.data;
-  },
-};
