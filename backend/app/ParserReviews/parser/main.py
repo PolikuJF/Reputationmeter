@@ -9,11 +9,31 @@ from selenium.webdriver import Firefox
 from selenium.webdriver.remote.webelement import WebElement
 from tqdm import tqdm
 
-from parser import selenium_helper as sh
-from parser.classes import Review
+from backend.app.ParserReviews.parser import selenium_helper as sh
+from backend.app.ParserReviews.parser.classes import Review
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+from .db import get_db
+from .models import Review
+from sqlalchemy.exc import IntegrityError
+
+def save_review_to_db(review_data: dict):
+    """Сохраняет отзыв в БД, если его ещё нет."""
+    db = next(get_db())
+    try:
+        # Проверяем, есть ли уже такой external_id
+        existing = db.query(Review).filter(Review.external_id == review_data["external_id"]).first()
+        if existing:
+            return
+        db_review = Review(**review_data)
+        db.add(db_review)
+        db.commit()
+    except IntegrityError as e:
+        db.rollback()
+        # возможно дубликат, игнорируем
+    finally:
+        db.close()
 
 def save_csv(data, filepath):
     """Save data to CSV file"""
@@ -101,6 +121,10 @@ def mode_reviews(driver: Firefox, filepath):
 
         data.append(new_review.__dict__)
 
+        # Сохраняем в БД
+        review_dict = new_review.__dict__.copy()
+        review_dict["external_id"] = review_dict.get("selenium_id", f"unknown_{i}")
+        save_review_to_db(review_dict)
     save_csv(data, filepath)  
 
 
