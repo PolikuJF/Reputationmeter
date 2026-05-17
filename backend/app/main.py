@@ -4,7 +4,8 @@ from app.database import engine, Base
 from app.routers import auth, establishments, reviews, dashboard
 
 # Отключаем автоматические редиректы с /path на /path/
-app = FastAPI(title="Reputation Meter API", redirect_slashes=False)
+
+app = FastAPI(title="Reputation Meter API")
 
 # CORS middleware
 app.add_middleware(

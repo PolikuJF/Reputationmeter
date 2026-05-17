@@ -35,7 +35,7 @@ def get_establishments(db: Session, owner_id: int, skip: int = 0, limit: int = 1
     ).offset(skip).limit(limit).all()
 
 def create_establishment(db: Session, est: schemas.EstablishmentCreate, owner_id: int):
-    db_est = models.Establishment(**est.dict(), owner_id=owner_id)
+    db_est = models.Establishment(**est.model_dump(), owner_id=owner_id)
     db.add(db_est)
     db.commit()
     db.refresh(db_est)

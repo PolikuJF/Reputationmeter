@@ -4,6 +4,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { LoginPage } from './pages/LoginPage';
 import { Layout } from './components/common/Layout';
 import { EstablishmentsPage } from './pages/EstablishmentsPage';
+import { RegisterPage } from './pages/RegisterPage';
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ function App() {
           />
           <Route path="/" element={<Navigate to="/dashboard" />} />
           <Route path="/establishments" element={<Layout><EstablishmentsPage /></Layout>} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

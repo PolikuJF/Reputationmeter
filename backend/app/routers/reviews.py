@@ -2,14 +2,14 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.database import get_db
-from app import crud, schemas
+from app import crud, schemas, models
 from app.routers.auth import oauth2_scheme
 from app.routers.establishments import get_current_user
 from fastapi import BackgroundTasks
 from app.tasks.analysis import process_review_async
 
 router = APIRouter(prefix="/reviews", tags=["reviews"], )
-@router.get("/", response_model=List[schemas.ReviewOut])
+@router.get("", response_model=List[schemas.ReviewOut])
 def list_reviews(
     establishment_id: Optional[int] = Query(None),
     sentiment: Optional[str] = Query(None, regex="^(positive|neutral|negative)$"),
