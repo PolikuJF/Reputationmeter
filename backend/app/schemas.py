@@ -27,6 +27,11 @@ class TokenData(BaseModel):
 class EstablishmentCreateByUrl(BaseModel):
     url: str
 
+class EstablishmentCreateManual(BaseModel):
+    name: str
+    address: str
+    url: str
+
 class EstablishmentBase(BaseModel):
     name: str
     address: Optional[str] = None

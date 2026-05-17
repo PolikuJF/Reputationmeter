@@ -1,3 +1,5 @@
+// frontend/src/components/reviews/ReviewFilterBar.tsx
+
 import { Select, Row, Col, Button } from 'antd';
 import { useEstablishments } from '../../hooks/useEstablishments';
 
@@ -27,13 +29,14 @@ export const ReviewFilterBar = ({
     <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
       <Col xs={24} sm={12} md={8}>
         <Select
-          placeholder="Все заведения"
+          placeholder="Выберите заведение"
           style={{ width: '100%' }}
-          allowClear
           loading={estLoading}
           value={selectedEstablishment}
           onChange={(val) => setSelectedEstablishment(val ?? undefined)}
         >
+          {/* Явная опция "Все заведения" */}
+          <Option value={undefined}>Все заведения</Option>
           {establishments?.map((est) => (
             <Option key={est.id} value={est.id}>{est.name}</Option>
           ))}
@@ -43,10 +46,11 @@ export const ReviewFilterBar = ({
         <Select
           placeholder="Любая тональность"
           style={{ width: '100%' }}
-          allowClear
           value={selectedSentiment}
           onChange={(val) => setSelectedSentiment(val ?? undefined)}
         >
+          {/* Явная опция "Любая тональность" */}
+          <Option value={undefined}>Любая тональность</Option>
           <Option value="positive">Позитивный</Option>
           <Option value="neutral">Нейтральный</Option>
           <Option value="negative">Негативный</Option>

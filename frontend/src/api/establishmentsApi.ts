@@ -9,8 +9,8 @@ export const establishmentsApi = {
     return response.data;
   },
 
-  createByUrl: async (url: string): Promise<Establishment> => {
-    const response = await apiClient.post('/establishments', { url });
+  create: async (data: { name: string; address: string; url: string }): Promise<Establishment> => {
+    const response = await apiClient.post('/establishments', data);
     return response.data;
   },
 
