@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 import { useDashboardOverview } from '../../hooks/useDashboard';
 import { useEstablishments } from '../../hooks/useEstablishments';
+import { formatInGmt5 } from '../../utils/dateUtils';
 import type { Dayjs } from 'dayjs';
 
 const { RangePicker } = DatePicker;
@@ -40,7 +41,7 @@ export const SentimentChart = ({
   const selectedEstablishment = establishments?.find(est => est.id === establishmentId);
   const lastParsedAt = selectedEstablishment?.last_parsed_at;
   const lastParsedFormatted = lastParsedAt
-    ? new Date(lastParsedAt).toLocaleString('ru-RU')
+    ? formatInGmt5(lastParsedAt)
     : establishmentId ? 'Нет данных' : 'Выберите заведение';
 
   if (isLoading) return <Spin tip="Загрузка графика..." />;
@@ -85,10 +86,10 @@ export const SentimentChart = ({
             <Select
               placeholder="Все заведения"
               style={{ width: 180 }}
-              allowClear
               value={establishmentId}
               onChange={onEstablishmentChange}
             >
+              <Option value={undefined}>Все заведения</Option>
               {establishments?.map((est) => (
                 <Option key={est.id} value={est.id}>{est.name}</Option>
               ))}

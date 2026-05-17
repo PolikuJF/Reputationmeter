@@ -3,10 +3,10 @@ from sqlalchemy.orm import Session
 from typing import List
 from jose import jwt, JWTError
 import os
+from urllib.parse import urlparse
 from app.database import get_db
 from app import crud, schemas, models
 from app.routers.auth import oauth2_scheme
-from app.services.establishment_resolver import resolve_establishment_by_url
 
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key")
 ALGORITHM = "HS256"
@@ -32,13 +32,37 @@ async def list_establishments(active_only: bool = Query(True), db: Session = Dep
         query = query.filter(models.Establishment.is_archived == False)
     return query.order_by(models.Establishment.created_at.desc()).all()
 
+
 @router.post("", response_model=schemas.EstablishmentOut)
-async def add_establishment(payload: schemas.EstablishmentCreateByUrl, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
-    data = await resolve_establishment_by_url(payload.url)
-    exists = db.query(models.Establishment).filter(models.Establishment.owner_id == current_user.id, models.Establishment.platform_url == data["platform_url"]).first()
+async def add_establishment(payload: schemas.EstablishmentCreateManual, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+
+    parsed = urlparse(payload.url)
+    host = parsed.netloc.lower()
+    if "yandex" in host:
+        platform_type = "yandex"
+    elif "google" in host or "goo.gl" in host:
+        platform_type = "google"
+    elif "2gis" in host:
+        platform_type = "2gis"
+    else:
+        raise HTTPException(status_code=400, detail="Поддерживаются ссылки Яндекс.Карт, Google Maps или 2ГИС")
+    
+
+    exists = db.query(models.Establishment).filter(
+        models.Establishment.owner_id == current_user.id,
+        models.Establishment.platform_url == payload.url
+    ).first()
     if exists:
         raise HTTPException(status_code=400, detail="Заведение уже добавлено")
-    est = schemas.EstablishmentCreate(**data)
+    
+
+    est = schemas.EstablishmentCreate(
+        name=payload.name,
+        address=payload.address,
+        platform_url=payload.url,
+        platform_type=platform_type,
+        external_id=None
+    )
     return crud.create_establishment(db, est, current_user.id)
 
 @router.delete("/{establishment_id}")

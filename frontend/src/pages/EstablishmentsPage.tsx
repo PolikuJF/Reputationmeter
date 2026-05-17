@@ -3,6 +3,7 @@ import { Card, List, Button, Input, Form, message, Modal, Popconfirm, Space, Typ
 import { PlusOutlined, DeleteOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { establishmentsApi } from '../api/establishmentsApi';
+import { formatInGmt5 } from '../utils/dateUtils';
 
 const { Text } = Typography;
 
@@ -17,14 +18,17 @@ export const EstablishmentsPage = () => {
   });
 
   const addMutation = useMutation({
-    mutationFn: (url: string) => establishmentsApi.createByUrl(url),
+    mutationFn: (data: { name: string; address: string; url: string }) => establishmentsApi.create(data),
     onSuccess: () => {
       message.success('Заведение добавлено');
       queryClient.invalidateQueries({ queryKey: ['establishments'] });
       setIsModalOpen(false);
       form.resetFields();
     },
-    onError: () => message.error('Ошибка добавления заведения'),
+    onError: (error: any) => {
+      const detail = error.response?.data?.detail;
+      message.error(detail || 'Ошибка добавления заведения');
+    },
   });
 
   const archiveMutation = useMutation({
@@ -47,8 +51,8 @@ export const EstablishmentsPage = () => {
     onError: () => message.error('Ошибка запуска парсера'),
   });
 
-  const handleSubmit = (values: { url: string }) => {
-    addMutation.mutate(values.url);
+  const handleSubmit = (values: { name: string; address: string; url: string }) => {
+    addMutation.mutate(values);
   };
 
   return (
@@ -91,7 +95,7 @@ export const EstablishmentsPage = () => {
                   <Text type="secondary">{item.platform_url}</Text>
                   <Text type="secondary">
                     Последний сбор:{' '}
-                    {item.last_parsed_at ? new Date(item.last_parsed_at).toLocaleString('ru-RU') : 'ещё не запускался'}
+                    {item.last_parsed_at ? formatInGmt5(item.last_parsed_at) : 'ещё не запускался'}
                   </Text>
                 </Space>
               }
@@ -104,9 +108,26 @@ export const EstablishmentsPage = () => {
       <Modal title="Добавить заведение" open={isModalOpen} onCancel={() => setIsModalOpen(false)} footer={null}>
         <Form form={form} onFinish={handleSubmit} layout="vertical">
           <Form.Item
+            name="name"
+            label="Название заведения"
+            rules={[{ required: true, message: 'Введите название заведения' }]}
+          >
+            <Input placeholder="Например: Ресторан 'Уют'" />
+          </Form.Item>
+          <Form.Item
+            name="address"
+            label="Адрес"
+            rules={[{ required: true, message: 'Введите адрес' }]}
+          >
+            <Input placeholder="Город, улица, дом" />
+          </Form.Item>
+          <Form.Item
             name="url"
             label="Ссылка на заведение"
-            rules={[{ required: true, message: 'Введите ссылку' }, { type: 'url', message: 'Введите корректный URL' }]}
+            rules={[
+              { required: true, message: 'Введите ссылку' },
+              { type: 'url', message: 'Введите корректный URL' },
+            ]}
           >
             <Input placeholder="https://yandex.ru/maps/..." />
           </Form.Item>
