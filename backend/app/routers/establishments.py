@@ -30,6 +30,6 @@ def list_establishments(db: Session = Depends(get_db), current_user = Depends(ge
     return crud.get_establishments(db, owner_id=current_user.id)
 
 @router.post("/", response_model=schemas.EstablishmentOut)
-def add_establishment(est: schemas.EstablishmentCreate, db: Session = Depends(get_db), current_user = Depends(get_current_user):
+def add_establishment(est: schemas.EstablishmentCreate, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     # TODO: валидация URL через API Яндекс.Карт
     return crud.create_establishment(db, est, current_user.id)
