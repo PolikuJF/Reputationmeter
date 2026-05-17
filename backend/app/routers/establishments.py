@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List
@@ -13,22 +12,6 @@ SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key")
 ALGORITHM = "HS256"
 router = APIRouter(prefix="/establishments", tags=["establishments"])
 
-=======
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from typing import List
-from app.database import get_db
-from app import crud, schemas
-from app.routers.auth import oauth2_scheme
-from jose import jwt
-import os
-from jose import JWTError
-
-SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key")
-ALGORITHM = "HS256"
-
-router = APIRouter(prefix="/establishments", tags=["establishments"], )
->>>>>>> 7f59b0e0a19afe8eb36a3cf6a5aec9d24fe8e7b1
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -43,7 +26,6 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise HTTPException(status_code=401, detail="Invalid token")
 
 @router.get("", response_model=List[schemas.EstablishmentOut])
-<<<<<<< HEAD
 async def list_establishments(active_only: bool = Query(True), db: Session = Depends(get_db), current_user=Depends(get_current_user)):
     query = db.query(models.Establishment).filter(models.Establishment.owner_id == current_user.id)
     if active_only:
@@ -67,12 +49,3 @@ async def archive_establishment(establishment_id: int, db: Session = Depends(get
     establishment.is_archived = True
     db.commit()
     return {"status": "archived"}
-=======
-def list_establishments(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
-    return crud.get_establishments(db, owner_id=current_user.id)
-
-@router.post("", response_model=schemas.EstablishmentOut)
-def add_establishment(est: schemas.EstablishmentCreate, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
-    # TODO: валидация URL через API Яндекс.Карт
-    return crud.create_establishment(db, est, current_user.id)
->>>>>>> 7f59b0e0a19afe8eb36a3cf6a5aec9d24fe8e7b1
