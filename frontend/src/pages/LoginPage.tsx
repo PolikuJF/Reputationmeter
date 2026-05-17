@@ -8,6 +8,11 @@ export const LoginPage = () => {
     localStorage.setItem('access_token', 'demo-token');
     message.success('Вход выполнен');
     navigate('/dashboard');
+    setTimeout(() => {
+      if (window.location.pathname !== '/dashboard') {
+        window.location.href = '/dashboard';
+      }
+    }, 100);
   };
 
   return (

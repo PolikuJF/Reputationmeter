@@ -8,8 +8,7 @@ from app.routers.establishments import get_current_user
 from fastapi import BackgroundTasks
 from app.tasks.analysis import process_review_async
 
-router = APIRouter(prefix="/reviews", tags=["reviews"])
-
+router = APIRouter(prefix="/reviews", tags=["reviews"], )
 @router.get("/", response_model=List[schemas.ReviewOut])
 def list_reviews(
     establishment_id: Optional[int] = Query(None),
@@ -38,3 +37,17 @@ def trigger_analysis(review_id: int, background_tasks: BackgroundTasks, db: Sess
         raise HTTPException(status_code=404, detail="Review not found")
     background_tasks.add_task(process_review_async, review_id)
     return {"status": "analysis started"}
+
+@router.get("/unnotified")
+def get_unnotified_negative_reviews(
+    sentiment: str = Query("negative"),
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    # Находим отзывы с негативным сентиментом, которые ещё не были уведомлены
+    reviews = db.query(models.Review).join(models.Establishment).filter(
+        models.Establishment.owner_id == current_user.id,
+        models.Review.sentiment == sentiment,
+        models.Review.notification_sent_at.is_(None)
+    ).all()
+    return reviews
