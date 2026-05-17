@@ -9,6 +9,8 @@ export const reviewsApi = {
     if (filters.status) params.append('status', filters.status);
     if (filters.limit) params.append('limit', String(filters.limit));
     if (filters.offset) params.append('offset', String(filters.offset));
+    if (filters.from_date) params.append('from_date', filters.from_date);
+    if (filters.to_date) params.append('to_date', filters.to_date);
     const response = await apiClient.get(`/reviews?${params.toString()}`);
     return response.data;
   },
@@ -17,4 +19,3 @@ export const reviewsApi = {
     return response.data;
   },
 };
-
