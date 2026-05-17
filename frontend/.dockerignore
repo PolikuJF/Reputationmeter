@@ -1,0 +1,35 @@
+# Зависимости
+node_modules
+npm-debug.log*
+
+# Сборка
+dist
+build
+.cache
+
+# Файлы окружения
+.env
+.env.local
+.env.production
+.env.development
+
+# IDE и системные файлы
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Логи
+*.log
+
+# TypeScript кэш
+*.tsbuildinfo
