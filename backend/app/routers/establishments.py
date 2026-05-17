@@ -6,6 +6,7 @@ from app import crud, schemas
 from app.routers.auth import oauth2_scheme
 from jose import jwt
 import os
+from jose import JWTError
 
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key")
 ALGORITHM = "HS256"
@@ -24,11 +25,11 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-@router.get("/", response_model=List[schemas.EstablishmentOut])
+@router.get("", response_model=List[schemas.EstablishmentOut])
 def list_establishments(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     return crud.get_establishments(db, owner_id=current_user.id)
 
-@router.post("/", response_model=schemas.EstablishmentOut)
+@router.post("", response_model=schemas.EstablishmentOut)
 def add_establishment(est: schemas.EstablishmentCreate, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     # TODO: валидация URL через API Яндекс.Карт
     return crud.create_establishment(db, est, current_user.id)

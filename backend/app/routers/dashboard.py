@@ -8,7 +8,7 @@ from app.routers.establishments import get_current_user
 from datetime import datetime, timedelta
 from collections import defaultdict
 
-router = APIRouter(prefix="/dashboard", tags=["dashboard"], )
+router = APIRouter(prefix="/dashboard", tags=["dashboard"],)
 
 @router.get("/overview")
 def get_overview(
@@ -87,3 +87,6 @@ def get_overview(
         "sentiment_timeline": timeline,
         "top_topics": top_topics
     }
+@router.get("/ping")
+def ping():
+    return {"status": "ok"}
