@@ -1,18 +1,27 @@
 export interface Review {
   id: number;
-  text: string;
-  date: string;
+  text: string | null;
+  created_at_origin: string | null;
+  fetched_at: string;
   establishment_id: number;
+  external_id: string;
+  author_name: string | null;
+  rating: number | null;
   sentiment: 'positive' | 'neutral' | 'negative' | null;
   status: 'new' | 'acknowledged' | 'resolved';
-  topics: string[] | null;
+  topics: string | null;
 }
 
 export interface Establishment {
   id: number;
   name: string;
-  url: string;
+  address: string | null;
+  platform_url: string;
+  platform_type: string;
+  external_id: string | null;
+  owner_id: number;
   is_archived: boolean;
+  created_at: string;
   last_parsed_at?: string | null;
 }
 

@@ -2,7 +2,6 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from datetime import datetime
 
-# User
 class UserBase(BaseModel):
     email: EmailStr
     full_name: Optional[str] = None
@@ -15,11 +14,9 @@ class UserOut(UserBase):
     role: str
     is_active: bool
     created_at: datetime
-
     class Config:
         from_attributes = True
 
-# Token
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -27,7 +24,9 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     email: Optional[str] = None
 
-# Establishment
+class EstablishmentCreateByUrl(BaseModel):
+    url: str
+
 class EstablishmentBase(BaseModel):
     name: str
     address: Optional[str] = None
@@ -44,11 +43,9 @@ class EstablishmentOut(EstablishmentBase):
     is_archived: bool
     created_at: datetime
     last_parsed_at: Optional[datetime] = None
-
     class Config:
         from_attributes = True
 
-# Review
 class ReviewBase(BaseModel):
     establishment_id: int
     external_id: str
@@ -61,16 +58,19 @@ class ReviewCreate(ReviewBase):
     pass
 
 class ReviewUpdateStatus(BaseModel):
-    status: str  # 'new', 'acknowledged', 'resolved'
+    status: str
 
 class ReviewOut(ReviewBase):
     id: int
     fetched_at: datetime
     sentiment: Optional[str] = None
-    topics: Optional[str] = None  # JSON string
+    topics: Optional[str] = None
     is_processed: bool
     status: str
     notification_sent_at: Optional[datetime] = None
-
     class Config:
         from_attributes = True
+
+class ReviewsResponse(BaseModel):
+    items: List[ReviewOut]
+    total: int

@@ -32,7 +32,6 @@ dmypy.json
 
 # Project specific
 app/nlp/NLPSYSA.ipynb
-app/ParserReviews/csv/*.csv
 *.db
 *.sqlite3
 

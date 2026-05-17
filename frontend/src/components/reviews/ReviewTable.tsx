@@ -15,10 +15,13 @@ export const ReviewTable = ({ reviews, loading }: ReviewTableProps) => {
   const { mutate: updateStatus } = useUpdateReviewStatus();
 
   const handleStatusChange = (reviewId: number, newStatus: string) => {
-    updateStatus({ reviewId, status: newStatus }, {
-      onSuccess: () => message.success('Статус обновлён'),
-      onError: () => message.error('Ошибка обновления'),
-    });
+    updateStatus(
+      { reviewId, status: newStatus },
+      {
+        onSuccess: () => message.success('Статус обновлён'),
+        onError: () => message.error('Ошибка обновления'),
+      }
+    );
   };
 
   const columns: ColumnsType<Review> = [
@@ -27,25 +30,38 @@ export const ReviewTable = ({ reviews, loading }: ReviewTableProps) => {
       dataIndex: 'text',
       key: 'text',
       ellipsis: true,
-      width: '40%',
-      render: (text: string) => <Text ellipsis={{ tooltip: true }}>{text}</Text>,
+      width: '45%',
+      render: (text: string | null) => <Text ellipsis={{ tooltip: true }}>{text || '—'}</Text>,
+    },
+    {
+      title: 'Автор',
+      dataIndex: 'author_name',
+      key: 'author_name',
+      width: 160,
+      render: (author: string | null) => author || '—',
     },
     {
       title: 'Дата',
-      dataIndex: 'date',
-      key: 'date',
+      dataIndex: 'created_at_origin',
+      key: 'created_at_origin',
       width: 120,
-      render: (date: string) => dayjs(date).format('DD.MM.YYYY'),
+      render: (date: string | null) => (date ? dayjs(date).format('DD.MM.YYYY') : '—'),
     },
     {
       title: 'Тональность',
       dataIndex: 'sentiment',
       key: 'sentiment',
-      width: 120,
-      render: (sent: string) => {
+      width: 130,
+      render: (sent: string | null) => {
         if (!sent) return <Text type="secondary">—</Text>;
+
         const color = sent === 'positive' ? 'green' : sent === 'negative' ? 'red' : 'gold';
-        return <Text style={{ color }}>{sent === 'positive' ? 'Позитив' : sent === 'negative' ? 'Негатив' : 'Нейтральный'}</Text>;
+
+        return (
+          <Text style={{ color }}>
+            {sent === 'positive' ? 'Позитив' : sent === 'negative' ? 'Негатив' : 'Нейтральный'}
+          </Text>
+        );
       },
     },
     {
@@ -70,8 +86,8 @@ export const ReviewTable = ({ reviews, loading }: ReviewTableProps) => {
       title: 'Темы',
       dataIndex: 'topics',
       key: 'topics',
-      width: 150,
-      render: (topics: string[] | null) => topics?.join(', ') || '—',
+      width: 180,
+      render: (topics: string | null) => topics || '—',
     },
   ];
 
@@ -81,8 +97,12 @@ export const ReviewTable = ({ reviews, loading }: ReviewTableProps) => {
       dataSource={reviews}
       loading={loading}
       rowKey="id"
-      pagination={{ pageSize: 10, showSizeChanger: true, showTotal: (total) => `Всего ${total} отзывов` }}
-      scroll={{ x: 800 }}
+      pagination={{
+        pageSize: 10,
+        showSizeChanger: true,
+        showTotal: (total) => `Всего ${total} отзывов`,
+      }}
+      scroll={{ x: 1000 }}
     />
   );
 };
