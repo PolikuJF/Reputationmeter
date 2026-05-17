@@ -1,5 +1,5 @@
 import { Layout as AntLayout, Menu, Button, Typography } from 'antd';
-import { LogoutOutlined, DashboardOutlined } from '@ant-design/icons';
+import { LogoutOutlined, DashboardOutlined, ShopOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { ReactNode, useState, useEffect } from 'react';
 
@@ -45,8 +45,8 @@ export const Layout = ({ children }: LayoutProps) => {
           defaultSelectedKeys={['dashboard']}
           items={[
             { key: 'dashboard', icon: <DashboardOutlined />, label: 'Дашборд', onClick: () => navigate('/dashboard') },
-        { key: 'establishments', icon: <ShopOutlined />, label: 'Заведения', onClick: () => navigate('/establishments') }  
-        ]}
+            { key: 'establishments', icon: <ShopOutlined />, label: 'Заведения', onClick: () => navigate('/establishments') }  
+          ]}
         />
       </Sider>
       <AntLayout>

@@ -1,9 +1,8 @@
-import { Table, Select, Space, message, Typography } from 'antd';
+import { Table, Select, message, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Review } from '../../types';
-import { ReviewStatusBadge } from './ReviewStatusBadge';
 import { useUpdateReviewStatus } from '../../hooks/useReviews';
-import dayjs from 'dayjs'; // установить dayjs
+import dayjs from 'dayjs';
 
 const { Text } = Typography;
 
@@ -84,7 +83,6 @@ export const ReviewTable = ({ reviews, loading }: ReviewTableProps) => {
       rowKey="id"
       pagination={{ pageSize: 10, showSizeChanger: true, showTotal: (total) => `Всего ${total} отзывов` }}
       scroll={{ x: 800 }}
-      responsive
     />
   );
 };
