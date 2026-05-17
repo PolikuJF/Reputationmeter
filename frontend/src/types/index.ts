@@ -1,7 +1,7 @@
 export interface Review {
   id: number;
   text: string;
-  date: string;        // ISO
+  date: string;
   establishment_id: number;
   sentiment: 'positive' | 'neutral' | 'negative' | null;
   status: 'new' | 'acknowledged' | 'resolved';
@@ -13,6 +13,7 @@ export interface Establishment {
   name: string;
   url: string;
   is_archived: boolean;
+  last_parsed_at?: string | null;
 }
 
 export interface ReviewsFilters {
@@ -21,6 +22,8 @@ export interface ReviewsFilters {
   status?: string;
   limit?: number;
   offset?: number;
+  from_date?: string;
+  to_date?: string;
 }
 
 export interface ReviewsResponse {

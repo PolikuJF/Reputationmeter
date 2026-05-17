@@ -6,5 +6,7 @@ export const useEstablishments = () => {
     queryKey: ['establishments'],
     queryFn: () => establishmentsApi.getList(true),
     staleTime: 10 * 60 * 1000,
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
   });
 };
