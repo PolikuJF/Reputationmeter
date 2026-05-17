@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 POSITIVE_WORDS = ["отлично", "вкусно", "хорошо", "понравилось", "супер", "классно", "быстро", "приятно", "рекомендую", "люблю"]
 NEGATIVE_WORDS = ["плохо", "ужасно", "отвратительно", "долго", "хамство", "грязно", "невкусно", "дорого", "разочарован", "кошмар"]
 
@@ -19,3 +20,15 @@ def extract_topics(text: str) -> list[str]:
     if any(word in text for word in ["долго", "быстро", "ожидание", "доставка"]): topics.append("скорость")
     if any(word in text for word in ["цена", "дорого", "дешево", "стоимость"]): topics.append("цены")
     return topics or ["общее"]
+=======
+import random
+
+def analyze_sentiment(text: str) -> str:
+    # Заглушка – для теста всегда negative или случайно
+    # Позже заменим на реальную модель
+    return "negative"  # или random.choice(["positive", "neutral", "negative"])
+
+def extract_topics(text: str) -> list:
+    # Заглушка: возвращает фиксированный список тем
+    return ["обслуживание", "качество еды"]
+>>>>>>> 7f59b0e0a19afe8eb36a3cf6a5aec9d24fe8e7b1

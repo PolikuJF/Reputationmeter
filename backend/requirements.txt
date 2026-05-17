@@ -10,7 +10,11 @@ passlib[bcrypt]==1.7.4
 bcrypt==4.2.0
 selenium==4.34.2
 tqdm==4.67.1
+<<<<<<< HEAD
 email-validator==2.1.1
 apscheduler==3.10.4
 
 httpx==0.27.2
+=======
+email-validator==2.1.1
+>>>>>>> 7f59b0e0a19afe8eb36a3cf6a5aec9d24fe8e7b1

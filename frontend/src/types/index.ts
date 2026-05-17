@@ -1,5 +1,6 @@
 export interface Review {
   id: number;
+<<<<<<< HEAD
   text: string | null;
   created_at_origin: string | null;
   fetched_at: string;
@@ -10,11 +11,20 @@ export interface Review {
   sentiment: 'positive' | 'neutral' | 'negative' | null;
   status: 'new' | 'acknowledged' | 'resolved';
   topics: string | null;
+=======
+  text: string;
+  date: string;
+  establishment_id: number;
+  sentiment: 'positive' | 'neutral' | 'negative' | null;
+  status: 'new' | 'acknowledged' | 'resolved';
+  topics: string[] | null;
+>>>>>>> 7f59b0e0a19afe8eb36a3cf6a5aec9d24fe8e7b1
 }
 
 export interface Establishment {
   id: number;
   name: string;
+<<<<<<< HEAD
   address: string | null;
   platform_url: string;
   platform_type: string;
@@ -22,6 +32,10 @@ export interface Establishment {
   owner_id: number;
   is_archived: boolean;
   created_at: string;
+=======
+  url: string;
+  is_archived: boolean;
+>>>>>>> 7f59b0e0a19afe8eb36a3cf6a5aec9d24fe8e7b1
   last_parsed_at?: string | null;
 }
 
@@ -38,4 +52,8 @@ export interface ReviewsFilters {
 export interface ReviewsResponse {
   items: Review[];
   total: number;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 7f59b0e0a19afe8eb36a3cf6a5aec9d24fe8e7b1

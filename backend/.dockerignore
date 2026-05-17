@@ -32,6 +32,10 @@ dmypy.json
 
 # Project specific
 app/nlp/NLPSYSA.ipynb
+<<<<<<< HEAD
+=======
+app/ParserReviews/csv/*.csv
+>>>>>>> 7f59b0e0a19afe8eb36a3cf6a5aec9d24fe8e7b1
 *.db
 *.sqlite3
 

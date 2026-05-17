@@ -3,6 +3,7 @@ import { Establishment } from '../types';
 
 export const establishmentsApi = {
   getList: async (activeOnly: boolean = true): Promise<Establishment[]> => {
+<<<<<<< HEAD
     const response = await apiClient.get('/establishments', {
       params: { active_only: activeOnly },
     });
@@ -23,3 +24,9 @@ export const establishmentsApi = {
     return response.data;
   },
 };
+=======
+    const response = await apiClient.get('/establishments', { params: { active_only: activeOnly } });
+    return response.data;
+  },
+};
+>>>>>>> 7f59b0e0a19afe8eb36a3cf6a5aec9d24fe8e7b1
