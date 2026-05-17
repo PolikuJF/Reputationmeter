@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export const LoginPage = () => {
   const navigate = useNavigate();
 
-  const onFinish = (values: { username: string; password: string }) => {
-    // Для демо – любой логин/пароль
+  const onFinish = () => {
     localStorage.setItem('access_token', 'demo-token');
     message.success('Вход выполнен');
     navigate('/dashboard');

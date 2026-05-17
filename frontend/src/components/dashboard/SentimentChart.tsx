@@ -3,8 +3,6 @@ import { useState } from 'react';
 import {
   LineChart,
   Line,
-  AreaChart,
-  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -14,7 +12,7 @@ import {
 } from 'recharts';
 import { useDashboardOverview } from '../../hooks/useDashboard';
 import { useEstablishments } from '../../hooks/useEstablishments';
-import dayjs, { Dayjs } from 'dayjs';
+import type { Dayjs } from 'dayjs';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
